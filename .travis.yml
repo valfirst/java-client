@@ -8,3 +8,7 @@ sudo: required
 install: true
 
 script: ./gradlew clean -Dtest.single=UIAutomator2Test test -x signArchives
+
+env:
+  matrix:
+    secure: T13p+Bo1+PYOE0luadbv6tayGDqDKncxCnDuKFwz7982suEVqDik44djXyStXTMFTbayYhD1MeQECwFv3aaas83OfM6XXyYOH0nrFXOTxmLPfCP+L/cfrbZ2wbCfVs366lRfhsuoOC8MTpvVmSBko9vbiXcPC1TJlZQmvrCYDKM=

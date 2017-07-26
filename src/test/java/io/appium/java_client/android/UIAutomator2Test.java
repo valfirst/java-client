@@ -28,6 +28,8 @@ public class UIAutomator2Test {
      * initialization.
      */
     @BeforeClass public static void beforeClass() throws Exception {
+        String userName = System.getenv("SAUCE_USERNAME");
+        String apiKey = System.getenv("SAUCE_API_KEY");
         DesiredCapabilities caps = DesiredCapabilities.android();
         caps.setCapability(MobileCapabilityType.AUTOMATION_NAME,AutomationName.ANDROID_UIAUTOMATOR2);
         caps.setCapability("appiumVersion", "1.6.5");
@@ -37,8 +39,8 @@ public class UIAutomator2Test {
         caps.setCapability("platformVersion","6.0");
         caps.setCapability("platformName","Android");
         caps.setCapability("app","sauce-storage:TestApp.app.zip");
-        driver = new AndroidDriver<>(new URL("http://" + System.getenv("SAUCE_USERNAME")
-                + ":" + System.getenv("SAUCE_API_KEY") + "@ondemand.saucelabs.com:80/wd/hub"), caps);
+        driver = new AndroidDriver<>(new URL("http://" + userName
+                + ":" + apiKey + "@ondemand.saucelabs.com:80/wd/hub"), caps);
     }
 
     /**
