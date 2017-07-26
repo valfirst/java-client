@@ -8,7 +8,6 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.remote.AutomationName;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
-import io.appium.java_client.service.local.AppiumServerHasNotBeenStartedLocallyException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -19,8 +18,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.File;
-import java.util.concurrent.TimeUnit;
+import java.net.URL;
 
 public class UIAutomator2Test {
     private static AppiumDriverLocalService service;
@@ -30,22 +28,17 @@ public class UIAutomator2Test {
      * initialization.
      */
     @BeforeClass public static void beforeClass() throws Exception {
-        service = AppiumDriverLocalService.buildDefaultService();
-        service.start();
-
-        if (service == null || !service.isRunning()) {
-            throw new AppiumServerHasNotBeenStartedLocallyException(
-                "An appium server node is not started!");
-        }
-
-        File appDir = new File("src/test/java/io/appium/java_client");
-        File app = new File(appDir, "ApiDemos-debug.apk");
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "Android Emulator");
-        capabilities.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
-        capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
-        driver = new AndroidDriver<>(service.getUrl(), capabilities);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        DesiredCapabilities caps = DesiredCapabilities.android();
+        caps.setCapability(MobileCapabilityType.AUTOMATION_NAME,AutomationName.ANDROID_UIAUTOMATOR2);
+        caps.setCapability("appiumVersion", "1.6.5");
+        caps.setCapability("deviceName","Android Emulator");
+        caps.setCapability("deviceOrientation", "portrait");
+        caps.setCapability("browserName", "");
+        caps.setCapability("platformVersion","6.0");
+        caps.setCapability("platformName","Android");
+        caps.setCapability("app","sauce-storage:TestApp.app.zip");
+        driver = new AndroidDriver<>(new URL("http://" + System.getenv("SAUCE_USERNAME")
+                + ":" + System.getenv("SAUCE_API_KEY") + "@ondemand.saucelabs.com:80/wd/hub"), caps);
     }
 
     /**
@@ -54,9 +47,6 @@ public class UIAutomator2Test {
     @AfterClass public static void afterClass() {
         if (driver != null) {
             driver.quit();
-        }
-        if (service != null) {
-            service.stop();
         }
     }
 
