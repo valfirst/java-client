@@ -38,7 +38,7 @@ public class UIAutomator2Test {
         caps.setCapability("browserName", "");
         caps.setCapability("platformVersion","6.0");
         caps.setCapability("platformName","Android");
-        caps.setCapability("app","sauce-storage:ApiDemos-debug.apk");
+        caps.setCapability("app","http://appium.s3.amazonaws.com/ApiDemos-debug-2015-03-19.apk");
         driver = new AndroidDriver<>(new URL("http://" + userName
                 + ":" + apiKey + "@ondemand.saucelabs.com:80/wd/hub"), caps);
     }
