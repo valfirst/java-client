@@ -9,7 +9,7 @@ dist: trusty
 
 install: true
 
-script: ./gradlew clean -Dtest.single=UIAutomator2Test test -x signArchives
+script: ./gradlew clean test -x signArchives
 
 env:
   matrix:
