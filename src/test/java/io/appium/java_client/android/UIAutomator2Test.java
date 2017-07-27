@@ -7,7 +7,6 @@ import io.appium.java_client.MobileBy;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.remote.AutomationName;
 import io.appium.java_client.remote.MobileCapabilityType;
-import io.appium.java_client.service.local.AppiumDriverLocalService;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -21,7 +20,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.net.URL;
 
 public class UIAutomator2Test {
-    private static AppiumDriverLocalService service;
     protected static AndroidDriver<AndroidElement> driver;
 
     /**

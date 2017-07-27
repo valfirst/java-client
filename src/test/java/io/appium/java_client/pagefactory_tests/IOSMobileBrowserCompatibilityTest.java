@@ -16,32 +16,18 @@
 
 package io.appium.java_client.pagefactory_tests;
 
-import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.ios.BaseSafariTest;
 import io.appium.java_client.pagefactory.AndroidFindBy;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSFindBy;
-import io.appium.java_client.remote.IOSMobileCapabilityType;
-import io.appium.java_client.remote.MobileBrowserType;
-import io.appium.java_client.remote.MobileCapabilityType;
-import io.appium.java_client.service.local.AppiumDriverLocalService;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
-import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-public class IOSMobileBrowserCompatibilityTest {
-
-    private WebDriver driver;
-    private AppiumDriverLocalService service;
+public class IOSMobileBrowserCompatibilityTest extends BaseSafariTest {
 
     @FindBy(name = "q")
     @AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"android:id/someId\")")
@@ -50,36 +36,6 @@ public class IOSMobileBrowserCompatibilityTest {
     @AndroidFindBy(className = "someClass")
     @FindBys({@FindBy(className = "r"), @FindBy(tagName = "a")}) @iOSFindBy(className = "someClass")
     private List<WebElement> foundLinks;
-
-    /**
-     * The setting up.
-     */
-    @Before public void setUp() throws Exception {
-        service = AppiumDriverLocalService.buildDefaultService();
-        service.start();
-
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, MobileBrowserType.SAFARI);
-        capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, "9.2");
-        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "iPhone Simulator");
-        //sometimes environment has performance problems
-        capabilities.setCapability(IOSMobileCapabilityType.LAUNCH_TIMEOUT, 500000);
-        driver = new IOSDriver<>(service.getUrl(), capabilities);
-        PageFactory.initElements(new AppiumFieldDecorator(driver, 5, TimeUnit.SECONDS), this);
-    }
-
-    /**
-     * finishing.
-     */
-    @After public void tearDown() throws Exception {
-        if (driver != null) {
-            driver.quit();
-        }
-
-        if (service != null) {
-            service.stop();
-        }
-    }
 
     @Test public void test() {
         driver.get("https://www.google.com");

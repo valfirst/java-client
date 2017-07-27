@@ -3,37 +3,36 @@ package io.appium.java_client.android;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import io.appium.java_client.remote.AutomationName;
 import io.appium.java_client.remote.MobileCapabilityType;
-import io.appium.java_client.service.local.AppiumDriverLocalService;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import java.io.File;
+import java.net.URL;
 import java.util.function.Predicate;
 
 public class IntentTest {
-    private static AppiumDriverLocalService service;
     protected static AndroidDriver<?> driver;
 
     /**
      * initialization.
      */
     @BeforeClass public static void beforeClass() throws Exception {
-        service = AppiumDriverLocalService.buildDefaultService();
-        service.start();
-
-        if (service == null || !service.isRunning()) {
-            throw new RuntimeException("An appium server node is not started!");
-        }
-
-        File appDir = new File("src/test/java/io/appium/java_client");
-        File app = new File(appDir, "IntentExample.apk");
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "Android Emulator");
-        capabilities.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
-        driver = new AndroidDriver<>(service.getUrl(), capabilities);
+        String userName = System.getenv("SAUCE_USERNAME");
+        String apiKey = System.getenv("SAUCE_API_KEY");
+        DesiredCapabilities caps = DesiredCapabilities.android();
+        caps.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
+        caps.setCapability("appiumVersion", "1.6.5");
+        caps.setCapability("deviceName","Android Emulator");
+        caps.setCapability("deviceOrientation", "portrait");
+        caps.setCapability("browserName", "");
+        caps.setCapability("platformVersion","6.0");
+        caps.setCapability("platformName","Android");
+        caps.setCapability("app","http://appium.s3.amazonaws.com/IntentExample.apk");
+        driver = new AndroidDriver<>(new URL("http://" + userName
+                + ":" + apiKey + "@ondemand.saucelabs.com:80/wd/hub"), caps);
     }
 
     /**
@@ -42,9 +41,6 @@ public class IntentTest {
     @AfterClass public static void afterClass() {
         if (driver != null) {
             driver.quit();
-        }
-        if (service != null) {
-            service.stop();
         }
     }
 
