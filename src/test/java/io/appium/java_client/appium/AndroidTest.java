@@ -4,67 +4,22 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.Activity;
 import io.appium.java_client.android.AndroidElement;
+import io.appium.java_client.android.BaseAndroidTest;
 import io.appium.java_client.android.StartsActivity;
-import io.appium.java_client.remote.MobileCapabilityType;
-import io.appium.java_client.remote.MobilePlatform;
-import io.appium.java_client.service.local.AppiumDriverLocalService;
-import io.appium.java_client.service.local.AppiumServerHasNotBeenStartedLocallyException;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.Response;
 
-import java.io.File;
 import java.util.Map;
 
-public class AndroidTest {
+public class AndroidTest extends BaseAndroidTest {
 
-    private static AppiumDriverLocalService service;
-    private static AppiumDriver<AndroidElement> driver;
     private StartsActivity startsActivity;
-
-    /**
-     * initialization.
-     */
-    @BeforeClass
-    public static void beforeClass() throws Exception {
-        service = AppiumDriverLocalService.buildDefaultService();
-        service.start();
-
-        if (service == null || !service.isRunning()) {
-            throw new AppiumServerHasNotBeenStartedLocallyException(
-                    "An appium server node is not started!");
-        }
-
-        File appDir = new File("src/test/java/io/appium/java_client");
-        File app = new File(appDir, "ApiDemos-debug.apk");
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
-        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "Android Emulator");
-        capabilities.setCapability(MobileCapabilityType.APP, app.getAbsolutePath());
-        driver = new AppiumDriver<>(service.getUrl(), capabilities);
-    }
-
-    /**
-     * finishing.
-     */
-    @AfterClass
-    public static void afterClass() {
-        if (driver != null) {
-            driver.quit();
-        }
-        if (service != null) {
-            service.stop();
-        }
-    }
 
     @Before
     public void setUp() throws Exception {
