@@ -9,7 +9,7 @@ dist: trusty
 
 install: true
 
-script: ./gradlew clean -Dtest.single=IOSDriverTest test -x signArchives
+script: ./gradlew clean -Dtest.single=XCUIAutomationTest test -x signArchives
 
 env:
   matrix:
