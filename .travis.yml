@@ -9,7 +9,7 @@ dist: trusty
 
 install: true
 
-script: ./gradlew clean -Dtest.single=XCUIAutomationTest test -x signArchives
+script: ./gradlew clean --tests "io.appium.java_client.android.*" test -x signArchives
 
 env:
   matrix:
